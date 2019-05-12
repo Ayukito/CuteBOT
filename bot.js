@@ -3,6 +3,32 @@ const fs = require("fs");
 const Discord = require("discord.js");
 const client = new Discord.Client();
 
+const firebase = require("firebase-admin");
+var serviceAccount = require("./firebaseAUTH.json");
+
+firebase.initializeApp({
+	credential: firebase.credential.cert(serviceAccount),
+	databaseURL: "https://cutebot-2f944.firebaseio.com"
+});
+
+var db = firebase.database();
+var ref = db.ref("serverstoreTEST");
+ref.once("value", function(snapshot) {
+	console.log(snapshot.val());
+});
+
+var ServerRef = ref.child("000001");
+ServerRef.set({
+	alanisawesome: {
+		date_of_birth: "June 23, 1912",
+		full_name: "Alan Turing"
+	},
+	gracehop: {
+		date_of_birth: "December 9, 1906",
+		full_name: "Grace Hopper"
+	}
+});
+
 const SQLite = require("better-sqlite3");
 client.sql = new SQLite("./scores.sqlite");
 
