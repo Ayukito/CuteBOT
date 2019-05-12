@@ -1,0 +1,28 @@
+{
+  "name": "cutebottest",
+  "version": "0.0.1",
+  "description": "TEST",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "AllisonLynn",
+  "license": "ISC",
+  "dependencies": {
+    "better-sqlite3": "^5.4.0",
+    "bufferutil": "^4.0.1",
+    "discord.js": "discordjs/discord.js",
+    "dotenv": "^8.0.0",
+    "encoding": "^0.1.12",
+    "nekos.life": "^2.0.4",
+    "node-gyp": "^4.0.0",
+    "random-puppy": "^1.1.0",
+    "rebuild": "^0.1.2",
+    "roi": "^0.18.0",
+    "sill": "0.0.4",
+    "superagent": "^5.0.5",
+    "tenorjs": "^1.0.7",
+    "utf-8-validate": "^5.0.2"
+  }
+}
