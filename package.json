@@ -10,12 +10,11 @@
   "author": "AllisonLynn",
   "license": "ISC",
   "dependencies": {
-    "better-sqlite3": "^5.4.0",
     "bufferutil": "^4.0.1",
     "discord.js": "discordjs/discord.js",
     "dotenv": "^8.0.0",
     "encoding": "^0.1.12",
-    "firebase-admin": "^7.3.0",
+    "jsonstore.io": "^0.1.0",
     "nekos.life": "^2.0.4",
     "node-gyp": "^4.0.0",
     "random-puppy": "^1.1.0",

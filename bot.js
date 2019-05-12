@@ -3,65 +3,21 @@ const fs = require("fs");
 const Discord = require("discord.js");
 const client = new Discord.Client();
 
-const firebase = require("firebase-admin");
-var serviceAccount = require("./firebaseAUTH.json");
-serviceAccount.private_key_id = process.env.fbTOKEN;
+const jsonstore = require("jsonstore.io");
+let store = new jsonstore(process.env.jsTOKEN);
 
-firebase.initializeApp({
-	credential: firebase.credential.cert(serviceAccount),
-	databaseURL: "https://cutebot-2f944.firebaseio.com"
-});
+client.guildstores = [];
 
-var db = firebase.database();
-var ref = db.ref("serverstoreTEST");
-ref.once("value", function(snapshot) {
-	console.log(snapshot.val());
-});
-
-//var ServerRef = ref.child("000001");
-/*ServerRef.set({
-	alanisawesome: {
-		date_of_birth: "June 23, 1912",
-		full_name: "Alan Turing"
-	},
-	gracehop: {
-		date_of_birth: "December 9, 1906",
-		full_name: "Grace Hopper"
+/*store.write("0001",{
+	person: {
+		level: 1,
+		points: 0,
+		money: 0
 	}
+});
+store.read("0001").then( (data) => {
+	console.log(data); // { "Age":56, "Email":"john@demo.com", "Name":"John Doe" }
 });*/
-
-/*var alanisawesome = ServerRef.child("alanisawesome");
-alanisawesome.update({
-	"full_name": "Amazing Grace"
-});*/
-
-/*var alanRef = ref.child("000001/alanisawesome");
-alanRef.update({
-	"full_name": "Allison Isip"
-});*/
-
-/*var ServerRef = ref.child("TESTServer");
-ServerRef.set({
-	users: {
-		user1:{
-			level: 1,
-			exp: 0,
-			money: 0
-		},
-		user2:{
-			level: 7,
-			exp: 1023,
-			money: 99
-		}
-	},
-	settings: {
-		store: {},
-		misc: true
-	}
-});*/
-
-const SQLite = require("better-sqlite3");
-client.sql = new SQLite("./scores.sqlite");
 
 client.colormain = 0xffbae9;
 
@@ -75,6 +31,21 @@ client.Tenor = require("tenorjs").client({
 
 const { prefix, name } = require("./config.json");
 
+const superagent = require("superagent");
+
+client.save = function(){
+	console.log("\x1b[33m%s\x1b[0m","[Autosaved data at " + new Date() + "]");
+	var guilds = client.guildstores;
+	for (var guild in client.guildstores) {
+		//console.log(guilds[guild]);
+		//console.log("Saving data to token: "+guilds[guild].token);
+		var guildstore = new jsonstore(guilds[guild].token);
+		guildstore.write("users",guilds[guild].users);
+	}
+};
+
+setInterval(client.save, 60000*10);
+
 client.on("ready", () => {
 	console.log("\x1b[33m%s\x1b[0m",`Logged in as ${client.user.tag}.`);
 	console.log("\x1b[32m%s\x1b[0m",`Is in ${client.guilds.size} servers and serving ${client.users.size} users!`);
@@ -84,19 +55,69 @@ client.on("ready", () => {
 	}
 
 	// Check if the table "points" exists.
-	const table = client.sql.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'scores';").get();
-	if (!table["count(*)"]) {
-		// If the table isn't there, create it and setup the database correctly.
-		client.sql.prepare("CREATE TABLE scores (id TEXT PRIMARY KEY, user TEXT, guild TEXT, points INTEGER, level INTEGER, money INTEGER);").run();
-		// Ensure that the "id" row is always unique and indexed.
-		client.sql.prepare("CREATE UNIQUE INDEX idx_scores_id ON scores (id);").run();
-		client.sql.pragma("synchronous = 1");
-		client.sql.pragma("journal_mode = wal");
-	}
- 
-	// And then we have two prepared statements to get and set the score data.
-	client.getScore = client.sql.prepare("SELECT * FROM scores WHERE user = ? AND guild = ?");
-	client.setScore = client.sql.prepare("INSERT OR REPLACE INTO scores (id, user, guild, points, level, money) VALUES (@id, @user, @guild, @points, @level, @money);");
+	
+	client.guilds.forEach(guild => {
+		//sturr
+		var token;
+
+		let startup = function(){
+			//console.log(token);
+			var guildstore = new jsonstore(token);
+			client.guildstores[guild.id] = {
+				"token": token,
+				users: {}
+			};
+			guild.members.forEach(member => {
+				guildstore.read("users/"+member.id).then(data =>{
+					if (data == null){
+						var userdata = {
+							level: 1,
+							points: 0,
+							money: 0
+						};
+						guildstore.write("users/"+member.id, userdata);
+
+						client.guildstores[guild.id].users[member.id] = userdata;
+						//console.log("Created userdata for "+member.user.username + " in server: " + guild.name);
+					}else{
+						//console.log("found userdata for "+member.user.username + " in server: " + guild.name);
+						client.guildstores[guild.id].users[member.id] = data;
+					}
+				});
+			});
+		};
+
+		store.read(guild.id).then(data =>{
+			if (data == null){
+				superagent
+					.get("https://www.jsonstore.io/get-token")
+					.then(resp=>{
+						//console.log("Creating new token: "+resp.body.token + "\nfor server "+guild.name);
+						store.write(guild.id, resp.body.token);
+						token = resp.body.token;
+						startup();
+					});
+			}else{
+				//console.log("Found token: "+data + "\nfor server "+guild.name);
+				token = data;
+				startup();
+			}
+			
+		});
+		
+
+		client.getScore = {};
+		client.getScore.get = function(authorid, guildid){
+			//console.log("got data of "+ authorid + " in " + guildid);
+			return client.guildstores[guildid].users[authorid];
+		};
+
+		client.setScore = {};
+		client.setScore.run = function(authorid, guildid, score){
+			//console.log("set data of "+ authorid + " in " + guildid + " to:\n"+score);
+			client.guildstores[guildid].users[authorid] = score;
+		};
+	});
 });
 
 client.commands = new Discord.Collection();
@@ -154,7 +175,7 @@ walk("./commands", function(err, results) {
 	const command = require(`./commands/${file}`);
 	client.commands.set(command.name, command);
 }*/
-  
+
 const escapeRegex = str => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 client.on("message", async message => {
 	if(message.author.bot) return;
@@ -163,11 +184,8 @@ client.on("message", async message => {
 		score = client.getScore.get(message.author.id, message.guild.id);
 		if (!score) {
 			score = {
-				id: `${message.guild.id}-${message.author.id}`,
-				user: message.author.id,
-				guild: message.guild.id,
-				points: 0,
 				level: 1,
+				points: 0,
 				money: 0
 			};
 		}
@@ -184,7 +202,7 @@ client.on("message", async message => {
 
 			message.channel.send({embed: embed});
 		}
-		client.setScore.run(score);
+		client.setScore.run(message.author.id, message.guild.id, score);
 	}
 
 	const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(prefix)})\\s*`);

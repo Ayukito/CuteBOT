@@ -1,11 +1,12 @@
 /* eslint-disable no-unused-vars */
+const jsonstore = require("jsonstore.io");
 module.exports = {
 	name: "stop",
-	aliases: ["restart"],
+	aliases: ["restart", "save"],
 	description: "Stop bot (bot owners only, restarts sometimes lol)",
-	execute(message, args) {
-		console.log(message.author.id);
+	execute(message, args, Discord) {
 		if (message.author.id == 312309974384640011) {
+			message.client.save();
 			message.channel.send("Shutting down bot. (restarts sometimes lol)")
 				.then(()=>{
 					process.exit();
