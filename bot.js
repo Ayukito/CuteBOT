@@ -5,6 +5,7 @@ const client = new Discord.Client();
 
 const firebase = require("firebase-admin");
 var serviceAccount = require("./firebaseAUTH.json");
+serviceAccount.private_key_id = process.env.fbTOKEN;
 
 firebase.initializeApp({
 	credential: firebase.credential.cert(serviceAccount),
@@ -39,7 +40,7 @@ alanRef.update({
 	"full_name": "Allison Isip"
 });*/
 
-var ServerRef = ref.child("TESTServer");
+/*var ServerRef = ref.child("TESTServer");
 ServerRef.set({
 	users: {
 		user1:{
@@ -57,7 +58,7 @@ ServerRef.set({
 		store: {},
 		misc: true
 	}
-});
+});*/
 
 const SQLite = require("better-sqlite3");
 client.sql = new SQLite("./scores.sqlite");
@@ -65,7 +66,7 @@ client.sql = new SQLite("./scores.sqlite");
 client.colormain = 0xffbae9;
 
 client.Tenor = require("tenorjs").client({
-	"Key": "2FFV1PW12XXM", // https://tenor.com/developer/keyregistration
+	"Key": process.env.tenorTOKEN, // https://tenor.com/developer/keyregistration
 	"Filter": "off", // "off", "low", "medium", "high", not case sensitive
 	"Locale": "en_US", // Your locale here, case-sensitivity depends on input
 	"MediaFilter": "minimal", // either minimal or basic, not case sensitive
