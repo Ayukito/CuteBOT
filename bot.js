@@ -59,7 +59,7 @@ client.on("ready", () => {
 			client.user.setActivity("Lynn code me", { type: "WATCHING" });
 		}else{
 			console.log("\x1b[34m%s\x1b[0m","Running from Heroku or not HOME");
-			client.user.setActivity("Live!", { type: "Playing" });
+			client.user.setActivity("Host Live!", { type: "STREAMING" });
 		}
 	});
 
