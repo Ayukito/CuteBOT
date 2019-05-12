@@ -34,9 +34,28 @@ alanisawesome.update({
 	"full_name": "Amazing Grace"
 });*/
 
-var alanRef = ref.child("000001/alanisawesome");
+/*var alanRef = ref.child("000001/alanisawesome");
 alanRef.update({
 	"full_name": "Allison Isip"
+});*/
+
+var ServerRef = ref.child("TESTServer");
+ServerRef.set({
+	users: {
+		user1:{
+			level: 1,
+			exp: 0,
+			money: 0
+		},
+		user2:{
+			level: 7,
+			exp: 1023,
+			money: 99
+		}
+	},
+	settings: {
+		store: {}
+	}
 });
 
 const SQLite = require("better-sqlite3");
