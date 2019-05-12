@@ -1,0 +1,7 @@
+.eslintrc.json
+.env
+package.json
+scores
+.DS_Store
+yarn.lock
+yarn-error.log
