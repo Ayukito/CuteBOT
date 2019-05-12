@@ -4,8 +4,8 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 
 const SQLite = require("better-sqlite3");
-console.log(process.env.OPENSHIFT_DATA_DIR);
-client.sql = new SQLite(`${process.env.OPENSHIFT_DATA_DIR}/scores.sqlite`);
+
+client.sql = new SQLite("./data/scores.sqlite");
 
 client.colormain = 0xffbae9;
 
