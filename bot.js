@@ -183,6 +183,11 @@ client.on("message", async message => {
 	}
 });
 
+if (!("OPENSHIFT_DATA_DIR" in process.env)) {
+	console.log(process.env);
+	throw new Error("Can't access data directory");
+}
+
 require("http").createServer().listen(3000);
 
 client.login(process.env.TOKEN).catch(console.error);
