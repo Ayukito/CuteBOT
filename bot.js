@@ -4,8 +4,7 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 
 const SQLite = require("better-sqlite3");
-
-client.sql = new SQLite("./data/scores.sqlite");
+client.sql = new SQLite("./scores.sqlite");
 
 client.colormain = 0xffbae9;
 
