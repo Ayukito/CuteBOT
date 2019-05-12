@@ -4,7 +4,7 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 
 const SQLite = require("better-sqlite3");
-client.sql = new SQLite("./scores.sqlite");
+client.sql = new SQLite(`${process.env.OPENSHIFT_DATA_DIR}/scores.sqlite`);
 
 client.colormain = 0xffbae9;
 
@@ -182,11 +182,6 @@ client.on("message", async message => {
 		message.reply("there was an error trying to execute that command!");
 	}
 });
-
-if (!("OPENSHIFT_DATA_DIR" in process.env)) {
-	console.log(process.env);
-	throw new Error("Can't access data directory");
-}
 
 require("http").createServer().listen(3000);
 
