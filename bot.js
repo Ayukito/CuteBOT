@@ -59,7 +59,7 @@ client.on("ready", () => {
 			client.user.setActivity("Lynn code me", { type: "WATCHING" });
 		}else{
 			console.log("\x1b[34m%s\x1b[0m","Running from Heroku or not HOME");
-			client.user.setActivity("Host Live!", { type: "STREAMING" });
+			client.user.setActivity("Host Live!", { type: "PLAYING" });
 		}
 	});
 
@@ -77,22 +77,24 @@ client.on("ready", () => {
 				users: {}
 			};
 			guild.members.forEach(member => {
-				guildstore.read("users/"+member.id).then(data =>{
-					if (data == null){
-						var userdata = {
-							level: 1,
-							points: 0,
-							money: 0
-						};
-						guildstore.write("users/"+member.id, userdata);
+				if (!member.user.bot){
+					guildstore.read("users/"+member.id).then(data =>{
+						if (data == null){
+							var userdata = {
+								level: 1,
+								points: 0,
+								money: 0
+							};
+							guildstore.write("users/"+member.id, userdata);
 
-						client.guildstores[guild.id].users[member.id] = userdata;
-						//console.log("Created userdata for "+member.user.username + " in server: " + guild.name);
-					}else{
-						//console.log("found userdata for "+member.user.username + " in server: " + guild.name);
-						client.guildstores[guild.id].users[member.id] = data;
-					}
-				});
+							client.guildstores[guild.id].users[member.id] = userdata;
+							//console.log("Created userdata for "+member.user.username + " in server: " + guild.name);
+						}else{
+							//console.log("found userdata for "+member.user.username + " in server: " + guild.name);
+							client.guildstores[guild.id].users[member.id] = data;
+						}
+					});
+				}
 			});
 		};
 
