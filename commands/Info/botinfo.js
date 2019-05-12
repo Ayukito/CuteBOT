@@ -17,7 +17,7 @@ module.exports = {
 		
 		var embed = new Discord.MessageEmbed()
 			.setAuthor(message.client.user.username, message.client.user.displayAvatarURL({ format: "png", size: 512 }))
-			.setTitle(message.guild.name)
+			.setTitle("Bot Info")
 			.addField("Bot created on", message.guild.createdAt.toDateString() + "\n "+ message.guild.createdAt.toLocaleTimeString("en-US"), true)
 			.addField("Bot owner", "<@312309974384640011>", true)
 			.addField("Uptime", `${days}d ${hours}h ${minutes}m ${Math.round(seconds)}s`, true)
