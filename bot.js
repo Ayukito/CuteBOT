@@ -18,7 +18,7 @@ ref.once("value", function(snapshot) {
 });
 
 var ServerRef = ref.child("000001");
-ServerRef.set({
+/*ServerRef.set({
 	alanisawesome: {
 		date_of_birth: "June 23, 1912",
 		full_name: "Alan Turing"
@@ -27,6 +27,11 @@ ServerRef.set({
 		date_of_birth: "December 9, 1906",
 		full_name: "Grace Hopper"
 	}
+});*/
+
+var alanisawesome = ServerRef.child("alanisawesome");
+alanisawesome.update({
+	"full_name": "Amazing Grace"
 });
 
 const SQLite = require("better-sqlite3");
