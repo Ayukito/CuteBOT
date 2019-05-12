@@ -53,6 +53,15 @@ client.on("ready", () => {
 	if(client.user.username!=name){
 		client.user.setUsername(name);
 	}
+	require("dns").lookup(require("os").hostname(), function (err, add) {
+		if(add == "192.168.1.195"){
+			console.log("\x1b[34m%s\x1b[0m","Running locally!");
+			client.user.setActivity("Lynn code me", { type: "WATCHING" });
+		}else{
+			console.log("\x1b[34m%s\x1b[0m","Running from Heroku or not HOME");
+			client.user.setActivity("Live!", { type: "Playing" });
+		}
+	});
 
 	// Check if the table "points" exists.
 	
