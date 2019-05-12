@@ -28,17 +28,8 @@ module.exports = {
 		sortable.forEach(element => {
 			var data = element[1];
 			const curLevel = data.level;
-			var neededXP = data.points;
-		
-			var done = false;
-			while (done == false){
-				neededXP++;
-				var valLevel = Math.round(0.25 * Math.sqrt(neededXP));
-				if (curLevel < valLevel){
-					done = true;
-				}
-			}
-			embed.addField("**"+plc+".** "+message.client.users.get(element[0]).tag, `Level ${data.level}\n ${data.points}/${neededXP} EXP`);
+
+			embed.addField("**"+plc+".** "+message.client.users.get(element[0]).tag, `Level ${data.level}\n ${data.exp}/${message.client.nextLevel(data.level+1)} EXP`);
 			plc++;
 		});
 		return message.channel.send({embed});

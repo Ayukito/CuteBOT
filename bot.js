@@ -82,6 +82,7 @@ client.on("ready", () => {
 						if (data == null){
 							var userdata = {
 								level: 1,
+								exp: 0,
 								points: 0,
 								money: 0
 							};
@@ -187,6 +188,10 @@ walk("./commands", function(err, results) {
 	client.commands.set(command.name, command);
 }*/
 
+client.nextLevel = function(level){
+	return Math.round(Math.pow(level, 1.75) + 0.8 * Math.pow(level, 1.25)) + 5;
+};
+
 const escapeRegex = str => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 client.on("message", async message => {
 	if(message.author.bot) return;
@@ -196,18 +201,21 @@ client.on("message", async message => {
 		if (!score) {
 			score = {
 				level: 1,
+				exp: 0,
 				points: 0,
 				money: 0
 			};
 		}
 		score.points++;
-		const curLevel = Math.round(0.25 * Math.sqrt(score.points));
-		if(score.level < curLevel) {
+		score.exp++;
+		
+		if(score.exp > client.nextLevel(score.level+1)) {
 			score.level++;
+			score.exp = 0;
 			var embed = new Discord.MessageEmbed()
 				.setAuthor(message.client.user.username, message.client.user.displayAvatarURL({ format: "png", size: 512 }))
 				.setTitle(message.author.username)
-				.addField("**Congrats!**", `You are now level **${curLevel}**!!!`, true)
+				.addField("**Congrats!**", `You are now level **${score.level}**!!!`, true)
 				.setColor(client.colormain)
 				.setThumbnail(message.author.displayAvatarURL({ format: "png", size: 512 }));
 
