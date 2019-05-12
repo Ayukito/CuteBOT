@@ -71,7 +71,7 @@ module.exports = {
 				if (pick == 0){
 					img = await nsfw.boobs();
 				}else
-					img = await nsfw.smallBoobs();
+					img = await nsfw.tits();
 				const exampleEmbed = new Discord.MessageEmbed()
 					.setColor(message.client.colormain)
 					.setTitle("Boobs!")
