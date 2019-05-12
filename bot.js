@@ -54,7 +54,8 @@ ServerRef.set({
 		}
 	},
 	settings: {
-		store: {}
+		store: {},
+		misc: true
 	}
 });
 
