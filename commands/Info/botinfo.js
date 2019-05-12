@@ -25,8 +25,7 @@ module.exports = {
 			.addField("Users", `**${message.client.users.size}** (**${onlineCount}** Online)`, true)
 			.addField("Channels", `**${textCount} ** Text, **${vcCount}** Voice`, true)
 			.setColor(message.client.colormain)
-			.setThumbnail(message.client.user.displayAvatarURL({ format: "png", size: 512 }))
-			.setFooter("Server ID: "+message.guild.id);
+			.setThumbnail(message.client.user.displayAvatarURL({ format: "png", size: 512 }));
 
 		message.channel.send({embed: embed});
 	},
