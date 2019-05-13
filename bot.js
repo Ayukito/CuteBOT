@@ -74,7 +74,7 @@ client.on("ready", () => {
 				console.log(users);
 				guild.members.forEach(member => {
 					if (!member.user.bot){
-						var data = client.guildstores[guild.id].users[member.id];
+						var data = users[member.id];
 						console.log(data);
 						if (data == null){
 							var userdata = {
