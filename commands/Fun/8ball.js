@@ -5,6 +5,7 @@ module.exports = {
 	name: "8ball",
 	description: "Ask the magic 8ball something!",
 	args: true,
+	guildOnly: true,
 	aliases: ["8b"],
 	usage: "<QUESTION>",
 	execute(message, args, Discord) {
