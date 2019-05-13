@@ -23,7 +23,7 @@ module.exports = {
 					message.channel.send(`You can't kick ${taggedUser.username}!`);
 				});
 		}else{
-			message.channel.send("You do not have permission to kick users!");
+			message.channel.send("You do not have permission to kick users! (Need permission KICK_MEMBERS)");
 		}
 	},
 };

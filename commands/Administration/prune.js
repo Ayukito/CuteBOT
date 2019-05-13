@@ -25,7 +25,7 @@ module.exports = {
 				message.channel.send("there was an error trying to prune messages in this channel!");
 			});
 		}else{
-			message.channel.send("You do not have permission to prune messages!");
+			message.channel.send("You do not have permission to prune messages! (Need permission MANAGE_MESSAGES)");
 		}
 	},
 };
