@@ -70,9 +70,11 @@ client.on("ready", () => {
 				muted: guildstore.read("muted"),
 				banned: guildstore.read("banned")
 			};
+			console.log(client.guildstores[guild.id].users);
 			guild.members.forEach(member => {
 				if (!member.user.bot){
 					var data = client.guildstores[guild.id].users[member.id];
+					console.log(data);
 					if (data == null){
 						var userdata = {
 							level: 1,
