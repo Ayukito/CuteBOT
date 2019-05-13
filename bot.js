@@ -75,8 +75,6 @@ client.on("ready", () => {
 			//settings
 			guildstore.read("settings").then(settings =>{
 				client.guildstores[guild.id].settings = settings;
-				console.log(settings == null && "Settings not found." || "Settings found!");
-				console.log(settings);
 				if (settings == null){
 					settings = {};
 				}
@@ -85,11 +83,17 @@ client.on("ready", () => {
 			//muted
 			guildstore.read("muted").then(muted =>{
 				client.guildstores[guild.id].muted = muted;
+				if (muted == null){
+					muted = {};
+				}
 			});
 
 			//banned
 			guildstore.read("banned").then(banned =>{
 				client.guildstores[guild.id].banned = banned;
+				if (banned == null){
+					banned = {};
+				}
 			});
 			//wait for user data to load
 			guildstore.read("users").then(users =>{
