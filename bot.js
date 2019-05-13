@@ -67,14 +67,28 @@ client.on("ready", () => {
 			var guildstore = new jsonstore(token);
 			client.guildstores[guild.id] = {
 				"token": token,
-				users: guildstore.read("users"),
-				settings: guildstore.read("settings"),
-				muted: guildstore.read("muted"),
-				banned: guildstore.read("banned")
+				users: {},
+				settings: {},
+				muted: {},
+				banned: {}
 			};
+			//settings
+			guildstore.read("settings").then(settings =>{
+				client.guildstores[guild.id].settings = settings;
+			});
+
+			//muted
+			guildstore.read("muted").then(muted =>{
+				client.guildstores[guild.id].muted = muted;
+			});
+
+			//banned
+			guildstore.read("banned").then(banned =>{
+				client.guildstores[guild.id].banned = banned;
+			});
 			//wait for user data to load
-			client.guildstores[guild.id].users.then(users =>{
-				//console.log(users);
+			guildstore.read("users").then(users =>{
+				client.guildstores[guild.id].users = users;
 				guild.members.forEach(member => {
 					if (!member.user.bot){
 						var data = users[member.id];
@@ -93,6 +107,7 @@ client.on("ready", () => {
 							//console.log("Created userdata for "+member.user.username + " in server: " + guild.name);
 						}else{
 							//console.log("Found userdata for "+member.user.username + " in server: " + guild.name);
+							//not necessary but w/e
 							client.guildstores[guild.id].users[member.id] = data;
 						}
 					}
