@@ -75,6 +75,7 @@ client.on("ready", () => {
 			//settings
 			guildstore.read("settings").then(settings =>{
 				client.guildstores[guild.id].settings = settings;
+				console.log(settings);
 			});
 
 			//muted
