@@ -114,10 +114,6 @@ client.on("ready", () => {
 	
 							client.guildstores[guild.id].users[member.id] = userdata;
 							//console.log("Created userdata for "+member.user.username + " in server: " + guild.name);
-						}else{
-							//console.log("Found userdata for "+member.user.username + " in server: " + guild.name);
-							//not necessary but w/e
-							client.guildstores[guild.id].users[member.id] = data;
 						}
 					}
 				});
