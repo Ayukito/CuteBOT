@@ -11,7 +11,7 @@ module.exports = {
 			.setColor(message.client.colormain)
 			.setTitle("Dice Roll")
 			.setDescription("<@"+message.author.id+"> has rolled a "+rand+"!")
-			.setThumbnail("ttp://gsanteco.is2.byuh.edu/cis101.2145/dice/"+rand+".png")
+			.setThumbnail("http://gsanteco.is2.byuh.edu/cis101.2145/dice/"+rand+".png")
 			.setAuthor(message.client.user.username, message.client.user.displayAvatarURL({ format: "png", size: 512 }));
 		message.delete().catch();
 		message.channel.send({embed});
