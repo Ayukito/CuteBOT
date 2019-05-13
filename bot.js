@@ -57,11 +57,13 @@ client.on("ready", () => {
 
 	// Check if the table "points" exists.
 	
+	//get guild tokens
 	client.guilds.forEach(guild => {
 		var token;
 
 		let startup = function(){
 			//console.log(token);
+			//get data
 			var guildstore = new jsonstore(token);
 			client.guildstores[guild.id] = {
 				"token": token,
@@ -70,12 +72,14 @@ client.on("ready", () => {
 				muted: guildstore.read("muted"),
 				banned: guildstore.read("banned")
 			};
+			//wait for user data to load
 			client.guildstores[guild.id].users.then(users =>{
-				console.log(users);
+				//console.log(users);
 				guild.members.forEach(member => {
 					if (!member.user.bot){
 						var data = users[member.id];
-						console.log(data);
+						//console.log(data);
+						//create data if not found, set after.
 						if (data == null){
 							var userdata = {
 								level: 1,
@@ -86,9 +90,9 @@ client.on("ready", () => {
 							guildstore.write("users/"+member.id, userdata);
 	
 							client.guildstores[guild.id].users[member.id] = userdata;
-							console.log("Created userdata for "+member.user.username + " in server: " + guild.name);
+							//console.log("Created userdata for "+member.user.username + " in server: " + guild.name);
 						}else{
-							console.log("found userdata for "+member.user.username + " in server: " + guild.name);
+							//console.log("Found userdata for "+member.user.username + " in server: " + guild.name);
 							client.guildstores[guild.id].users[member.id] = data;
 						}
 					}
@@ -96,7 +100,7 @@ client.on("ready", () => {
 			});
 			
 		};
-
+		//read guilds, create token for missing guilds and then load the guild data
 		store.read(guild.id).then(data =>{
 			if (data == null){
 				superagent
@@ -115,7 +119,7 @@ client.on("ready", () => {
 			
 		});
 		
-
+		//ugly replacement code for sqlite3 because I'm lazy
 		client.getScore = {};
 		client.getScore.get = function(authorid, guildid){
 			//console.log("got data of "+ authorid + " in " + guildid);
@@ -130,9 +134,10 @@ client.on("ready", () => {
 	});
 });
 
+
+//COMMAND STUFF DONT TOUCH//
 client.commands = new Discord.Collection();
 const commandFiles = [];//fs.readdirSync("./commands").filter(file => file.endsWith(".js"));
-const cooldowns = new Discord.Collection();
 
 var walk = function(dir, done) {
 	var results = [];
@@ -180,22 +185,22 @@ walk("./commands", function(err, results) {
 		
 	});
 });
-
-/*for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
-	client.commands.set(command.name, command);
-}*/
+//COMMAND STUFF DONT TOUCH//
 
 client.nextLevel = function(level){
 	return Math.round(Math.pow(level, 1.75) + 0.8 * Math.pow(level, 1.25)) + 5;
 };
 
+
+//Monster I hope to never touch again below.
+const cooldowns = new Discord.Collection();
 const escapeRegex = str => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 client.on("message", async message => {
 	if(message.author.bot) return;
 	let score;
 	if (message.guild) {
 		score = client.getScore.get(message.author.id, message.guild.id);
+		//make data for new users, will be moved to onguildmemberadded later.
 		if (!score) {
 			score = {
 				level: 1,
@@ -206,7 +211,7 @@ client.on("message", async message => {
 		}
 		score.points++;
 		score.exp++;
-		
+		//determine if level up or not
 		if(score.exp > client.nextLevel(score.level+1)) {
 			score.level++;
 			score.exp = 0;
