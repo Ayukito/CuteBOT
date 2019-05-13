@@ -70,28 +70,31 @@ client.on("ready", () => {
 				muted: guildstore.read("muted"),
 				banned: guildstore.read("banned")
 			};
-			console.log(client.guildstores[guild.id].users);
-			guild.members.forEach(member => {
-				if (!member.user.bot){
-					var data = client.guildstores[guild.id].users[member.id];
-					console.log(data);
-					if (data == null){
-						var userdata = {
-							level: 1,
-							exp: 0,
-							points: 0,
-							money: 0
-						};
-						guildstore.write("users/"+member.id, userdata);
-
-						client.guildstores[guild.id].users[member.id] = userdata;
-						console.log("Created userdata for "+member.user.username + " in server: " + guild.name);
-					}else{
-						console.log("found userdata for "+member.user.username + " in server: " + guild.name);
-						client.guildstores[guild.id].users[member.id] = data;
+			client.guildstores[guild.id].users.then(users =>{
+				console.log(users);
+				guild.members.forEach(member => {
+					if (!member.user.bot){
+						var data = client.guildstores[guild.id].users[member.id];
+						console.log(data);
+						if (data == null){
+							var userdata = {
+								level: 1,
+								exp: 0,
+								points: 0,
+								money: 0
+							};
+							guildstore.write("users/"+member.id, userdata);
+	
+							client.guildstores[guild.id].users[member.id] = userdata;
+							console.log("Created userdata for "+member.user.username + " in server: " + guild.name);
+						}else{
+							console.log("found userdata for "+member.user.username + " in server: " + guild.name);
+							client.guildstores[guild.id].users[member.id] = data;
+						}
 					}
-				}
+				});
 			});
+			
 		};
 
 		store.read(guild.id).then(data =>{
