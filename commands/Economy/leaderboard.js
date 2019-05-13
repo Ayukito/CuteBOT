@@ -17,6 +17,10 @@ module.exports = {
 		});
 
 		sortable = sortable.slice(0,10);
+
+		sortable = sortable.filter(function (item) {
+			return item[1].points != 0;
+		});
 		//const top10 = message.client.sql.prepare("SELECT * FROM scores WHERE guild = ? ORDER BY points DESC LIMIT 10;").all(message.guild.id);
 		const top10 = clonedArray;
 		const embed = new Discord.MessageEmbed()
