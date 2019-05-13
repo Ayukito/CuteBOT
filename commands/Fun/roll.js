@@ -4,7 +4,6 @@ module.exports = {
 	name: "roll",
 	description: "Roll a 6 sided die",
 	aliases: ["dice", "die"],
-	guildOnly: true,
 	execute(message, args, Discord) {
 		var rand = Math.floor(Math.random() * 6)+1;
 
@@ -14,7 +13,9 @@ module.exports = {
 			.setDescription("<@"+message.author.id+"> has rolled a "+rand+"!")
 			.setThumbnail("https://github.com/Ayukito/Ayukito.github.io/blob/master/"+rand+".png?raw=true")
 			.setAuthor(message.client.user.username, message.client.user.displayAvatarURL({ format: "png", size: 512 }));
-		message.delete().catch();
+		if(!message.channel.type == "dm"){
+			message.delete().catch();
+		}
 		message.channel.send({embed});
 	},
 };

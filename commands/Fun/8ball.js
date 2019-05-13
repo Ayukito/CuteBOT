@@ -5,7 +5,6 @@ module.exports = {
 	name: "8ball",
 	description: "Ask the magic 8ball something!",
 	args: true,
-	guildOnly: true,
 	aliases: ["8b"],
 	usage: "<QUESTION>",
 	execute(message, args, Discord) {
@@ -20,7 +19,9 @@ module.exports = {
 				.setDescription("<@"+message.author.id+">**:**\n"+mes+"\n**8Ball:**\n"+resp)
 				.setThumbnail("http://www.pngmart.com/files/3/8-Ball-Pool-Transparent-PNG.png")
 				.setAuthor(message.client.user.username, message.client.user.displayAvatarURL({ format: "png", size: 512 }));
-			message.delete().catch();
+			if(!message.channel.type == "dm"){
+				message.delete().catch();
+			}
 			message.channel.send({embed});
 		}else{
 			message.channel.send("That's not a question! Ask again.");
