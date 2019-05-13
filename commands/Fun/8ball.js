@@ -4,7 +4,6 @@ const responses = ["It is certain", "It is decidedly so", "Without a doubt", "Ye
 module.exports = {
 	name: "8ball",
 	description: "Ask the magic 8ball something!",
-	guildOnly: true,
 	args: true,
 	aliases: ["8b"],
 	usage: "<QUESTION>",
