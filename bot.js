@@ -36,6 +36,13 @@ client.save = function(){
 
 setInterval(client.save, 60000*10);
 
+var dataFormat = {
+	level: 1,
+	exp: 0,
+	points: 0,
+	money: 0
+};
+
 client.on("ready", () => {
 	//fancy
 	console.log("\x1b[33m%s\x1b[0m",`Logged in as ${client.user.tag}.`);
@@ -104,12 +111,7 @@ client.on("ready", () => {
 						//console.log(data);
 						//create data if not found, set after.
 						if (data == null){
-							var userdata = {
-								level: 1,
-								exp: 0,
-								points: 0,
-								money: 0
-							};
+							var userdata = JSON.parse(JSON.stringify(dataFormat));
 							guildstore.write("users/"+member.id, userdata);
 	
 							client.guildstores[guild.id].users[member.id] = userdata;
@@ -155,9 +157,9 @@ client.on("ready", () => {
 });
 
 
-//COMMAND STUFF DONT TOUCH//
+//COMMAND STUFF BELOW DONT TOUCH//
 client.commands = new Discord.Collection();
-const commandFiles = [];//fs.readdirSync("./commands").filter(file => file.endsWith(".js"));
+const commandFiles = [];
 
 var walk = function(dir, done) {
 	var results = [];
@@ -205,12 +207,19 @@ walk("./commands", function(err, results) {
 		
 	});
 });
-//COMMAND STUFF DONT TOUCH//
+//COMMAND STUFF ABOVE DONT TOUCH//
 
 client.nextLevel = function(level){
 	return Math.round(Math.pow(level, 1.75) + 0.8 * Math.pow(level, 1.25)) + 5;
 };
 
+//initialize new member data
+client.on("guildMemberAdd", member => {
+	if(client.guildstores[member.guild.id].users[member.id] == null){
+		var userdata = JSON.parse(JSON.stringify(dataFormat));
+		client.guildstores[member.guild.id].users[member.id] = userdata;
+	}
+});
 
 //Monster I hope to never touch again below.
 const cooldowns = new Discord.Collection();
@@ -222,12 +231,9 @@ client.on("message", async message => {
 		score = client.getScore.get(message.author.id, message.guild.id);
 		//make data for new users, will be moved to onguildmemberadded later.
 		if (!score) {
-			score = {
-				level: 1,
-				exp: 0,
-				points: 0,
-				money: 0
-			};
+			score = JSON.parse(JSON.stringify(dataFormat));
+			//just in case kek
+			client.guildstores[message.guild.id].users[message.author.id] = score;
 		}
 		score.points++;
 		score.exp++;
