@@ -83,7 +83,7 @@ client.on("ready", () => {
 						guildstore.write("users/"+member.id, userdata);
 
 						client.guildstores[guild.id].users[member.id] = userdata;
-						//console.log("Created userdata for "+member.user.username + " in server: " + guild.name);
+						console.log("Created userdata for "+member.user.username + " in server: " + guild.name);
 					}else{
 						console.log("found userdata for "+member.user.username + " in server: " + guild.name);
 						client.guildstores[guild.id].users[member.id] = data;
