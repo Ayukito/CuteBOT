@@ -8,51 +8,43 @@ let store = new jsonstore(process.env.jsTOKEN);
 
 client.guildstores = [];
 
-/*store.write("0001",{
-	person: {
-		level: 1,
-		points: 0,
-		money: 0
-	}
-});
-store.read("0001").then( (data) => {
-	console.log(data); // { "Age":56, "Email":"john@demo.com", "Name":"John Doe" }
-});*/
-
 client.colormain = 0xffbae9;
 
+//init Tenor client
 client.Tenor = require("tenorjs").client({
-	"Key": process.env.tenorTOKEN, // https://tenor.com/developer/keyregistration
-	"Filter": "off", // "off", "low", "medium", "high", not case sensitive
-	"Locale": "en_US", // Your locale here, case-sensitivity depends on input
-	"MediaFilter": "minimal", // either minimal or basic, not case sensitive
-	"DateFormat": "D/MM/YYYY - H:mm:ss A" // Change this accordingly
+	"Key": process.env.tenorTOKEN,
+	"Filter": "off",
+	"Locale": "en_US",
+	"MediaFilter": "minimal",
+	"DateFormat": "D/MM/YYYY - H:mm:ss A"
 });
 
 const { prefix, name } = require("./config.json");
 
 const superagent = require("superagent");
 
+//basic save function for my stoof
 client.save = function(){
-	console.log("\x1b[33m%s\x1b[0m","[Autosaved data at " + new Date() + "]");
 	var guilds = client.guildstores;
 	for (var guild in client.guildstores) {
-		//console.log(guilds[guild]);
 		//console.log("Saving data to token: "+guilds[guild].token);
 		var guildstore = new jsonstore(guilds[guild].token);
 		guildstore.write("users",guilds[guild].users);
 	}
+	console.log("\x1b[33m%s\x1b[0m","[Autosaved data at " + new Date() + "]");
 };
 
 setInterval(client.save, 60000*10);
 
 client.on("ready", () => {
+	//fancy
 	console.log("\x1b[33m%s\x1b[0m",`Logged in as ${client.user.tag}.`);
 	console.log("\x1b[32m%s\x1b[0m",`Is in ${client.guilds.size} servers and serving ${client.users.size} users!`);
 	console.log("\x1b[35m%s\x1b[0m", `Started at ${client.readyAt.toString()}`);
 	if(client.user.username!=name){
 		client.user.setUsername(name);
 	}
+	//set activity based on location
 	require("dns").lookup(require("os").hostname(), function (err, add) {
 		if(add == "192.168.1.195"){
 			console.log("\x1b[34m%s\x1b[0m","Running locally!");
@@ -66,7 +58,6 @@ client.on("ready", () => {
 	// Check if the table "points" exists.
 	
 	client.guilds.forEach(guild => {
-		//sturr
 		var token;
 
 		let startup = function(){
@@ -74,27 +65,29 @@ client.on("ready", () => {
 			var guildstore = new jsonstore(token);
 			client.guildstores[guild.id] = {
 				"token": token,
-				users: {}
+				users: guildstore.read("users"),
+				settings: guildstore.read("settings"),
+				muted: guildstore.read("muted"),
+				banned: guildstore.read("banned")
 			};
 			guild.members.forEach(member => {
 				if (!member.user.bot){
-					guildstore.read("users/"+member.id).then(data =>{
-						if (data == null){
-							var userdata = {
-								level: 1,
-								exp: 0,
-								points: 0,
-								money: 0
-							};
-							guildstore.write("users/"+member.id, userdata);
+					var data = client.guildstores[guild.id].users[member.id];
+					if (data == null){
+						var userdata = {
+							level: 1,
+							exp: 0,
+							points: 0,
+							money: 0
+						};
+						guildstore.write("users/"+member.id, userdata);
 
-							client.guildstores[guild.id].users[member.id] = userdata;
-							//console.log("Created userdata for "+member.user.username + " in server: " + guild.name);
-						}else{
-							//console.log("found userdata for "+member.user.username + " in server: " + guild.name);
-							client.guildstores[guild.id].users[member.id] = data;
-						}
-					});
+						client.guildstores[guild.id].users[member.id] = userdata;
+						//console.log("Created userdata for "+member.user.username + " in server: " + guild.name);
+					}else{
+						console.log("found userdata for "+member.user.username + " in server: " + guild.name);
+						client.guildstores[guild.id].users[member.id] = data;
+					}
 				}
 			});
 		};
