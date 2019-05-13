@@ -3,6 +3,7 @@ module.exports = {
 	name: "kick",
 	description: "Kick user",
 	guildOnly: true,
+	args: true,
 	aliases: ["boot"],
 	usage: "<@user>",
 	execute(message, args) {
