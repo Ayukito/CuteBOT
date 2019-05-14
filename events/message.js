@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 module.exports = (client, message) => {
 		
-	console.log(message.contents);
+	//console.log(message.content);
 	//Monster I hope to never touch again below.
 	var cooldowns = new Discord.Collection();
 	var escapeRegex = str => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
