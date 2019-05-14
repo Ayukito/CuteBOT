@@ -224,15 +224,9 @@ for (const file of eventFiles) {
 	client.events.set(event.name, event);
 }
 
-function logMapElements(value, key, map) {
-	console.log(`m[${key}] = ${value}`);
-}
-
-client.events.forEach(logMapElements);
-
 client.on("raw", packet =>{
 	console.log(packet.t);
-	const localEvent = client.events.get(packet.t);
+	const localEvent = client.events.has(packet.t);
 	if (localEvent){
 		console.log("found packet for " + packet.t);
 	}
