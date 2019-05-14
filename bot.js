@@ -224,6 +224,8 @@ for (const file of eventFiles) {
 	client.events.set(event.name, event);
 }
 
+console.log(client.events);
+console.log(client.events.toString());
 client.on("raw", packet =>{
 	console.log(packet.t);
 	const localEvent = client.events.get(packet.t);
