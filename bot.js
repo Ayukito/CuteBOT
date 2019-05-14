@@ -29,19 +29,6 @@ const { prefix, name } = require("./config.json");
 client.prefix = prefix;
 client.newname = name;
 
-//basic save function for my stoof
-client.save = function(){
-	var guilds = client.guildstores;
-	for (var guild in client.guildstores) {
-		//console.log("Saving data to token: "+guilds[guild].token);
-		var guildstore = new jsonstore(guilds[guild].token);
-		guildstore.write("users",guilds[guild].users);
-	}
-	console.log("\x1b[33m%s\x1b[0m","[Autosaved data at " + new Date() + "]");
-};
-
-setInterval(client.save, 60000*10);
-
 //COMMAND STUFF BELOW DONT TOUCH//
 client.commands = new Discord.Collection();
 const commandFiles = [];
@@ -94,10 +81,6 @@ walk("./commands", function(err, results) {
 });
 //COMMAND STUFF ABOVE DONT TOUCH//
 
-client.nextLevel = function(level){
-	return Math.round(Math.pow(level, 1.75) + 0.8 * Math.pow(level, 1.25)) + 5;
-};
-
 //event handling
 client.events = new Discord.Collection();
 
@@ -110,6 +93,30 @@ fs.readdir("./events/", (err, files) => {
 	});
 });
 
-require("http").createServer().listen(3000);
+//
+//
+//
+//
+//
+//
 
+//determine the exp for the level
+client.nextLevel = function(level){
+	return Math.round(Math.pow(level, 1.75) + 0.8 * Math.pow(level, 1.25)) + 5;
+};
+
+//basic save function for my stoof
+client.save = function(){
+	var guilds = client.guildstores;
+	for (var guild in client.guildstores) {
+		//console.log("Saving data to token: "+guilds[guild].token);
+		var guildstore = new jsonstore(guilds[guild].token);
+		guildstore.write("users",guilds[guild].users);
+	}
+	console.log("\x1b[33m%s\x1b[0m","[Autosaved data at " + new Date() + "]");
+};
+
+setInterval(client.save, 60000*10);
+
+require("http").createServer().listen(3000);
 client.login(process.env.TOKEN).catch(console.error);
