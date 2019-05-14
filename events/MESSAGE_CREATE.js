@@ -7,7 +7,5 @@ module.exports = {
 		const message_id = packet.d.message_id;
 		const message = client.getMessage(channel_id, message_id);
 		console.log(message);
-		await message;
-		console.log(message);
 	}
 };
