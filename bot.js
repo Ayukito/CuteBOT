@@ -99,7 +99,6 @@ client.nextLevel = function(level){
 };
 
 //event handling
-
 client.events = new Discord.Collection();
 
 fs.readdir("./events/", (err, files) => {
