@@ -228,7 +228,7 @@ function logMapElements(value, key, map) {
 	console.log(`m[${key}] = ${value}`);
 }
 
-client.forEach(logMapElements);
+client.events.forEach(logMapElements);
 
 client.on("raw", packet =>{
 	console.log(packet.t);
