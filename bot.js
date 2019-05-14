@@ -220,8 +220,9 @@ client.events = new Discord.Collection();
 const eventFiles = fs.readdirSync("./events").filter(file => file.endsWith(".js"));
 
 for (const file of eventFiles) {
+	console.log("Added " + file + " to the events");
 	const event = require(`./events/${file}`);
-	client.events.set(file, event);
+	client.events.set(event.name, event);
 }
 
 client.on("raw", packet =>{
