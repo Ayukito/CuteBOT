@@ -221,12 +221,12 @@ const eventFiles = fs.readdirSync("./events").filter(file => file.endsWith(".js"
 
 for (const file of eventFiles) {
 	const event = require(`./events/${file}`);
-	client.events.set(event.name, event);
+	client.events.set(file, event);
 }
 
 client.on("raw", packet =>{
 	console.log(packet.t);
-	const localEvent = client.events.has(packet.t);
+	const localEvent = client.events.has(packet.t.lower());
 	console.log(`Has ${packet.t} in events folder: ${localEvent}`);
 	if (localEvent){
 		console.log("found packet for " + packet.t);
