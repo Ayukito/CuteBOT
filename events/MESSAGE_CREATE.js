@@ -6,9 +6,11 @@ module.exports = {
 		const channel_id = packet.d.channel_id;
 		const message_id = packet.d.message_id;
 		client.channels.fetch(channel_id).then(channel =>{
-			channel.messages.fetch(message_id)
-				.then(console.log)
-				.catch(console.error);
+			channel.messages.fetch({around: message_id, limit: 1})
+				.then(messages => {
+					console.log(messages.first());
+					messages.first().edit("This fetched message was edited");
+				});
 		});
 	}
 };
