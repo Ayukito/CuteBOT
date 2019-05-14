@@ -228,6 +228,7 @@ client.on("raw", packet =>{
 	const localEvent = client.events.has(packet.t+".js");
 	if (localEvent){
 		console.log("found packet for " + packet.t);
+		client.events.has(packet.t+".js").execute(client, Discord, packet);
 	}
 });
 

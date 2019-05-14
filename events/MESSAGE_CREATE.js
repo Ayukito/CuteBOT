@@ -1,5 +1,6 @@
 module.exports = {
-	execute(message) {
-		console.log(message);
+	execute(client, Discord, packet) {
+		console.log(packet.toString());
+		
 	}
 };
