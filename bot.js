@@ -224,6 +224,15 @@ for (const file of eventFiles) {
 	client.events.set(file, event);
 }
 
+client.getMessage = async function(messageid, channelid){
+	client.channels.fetch(channelid).then(channel =>{
+		channel.messages.fetch({around: messageid, limit: 1})
+			.then(messages => {
+				return messages.first();
+			});
+	});
+};
+
 client.on("raw", packet =>{
 	const localEvent = client.events.has(packet.t+".js");
 	if (localEvent){
