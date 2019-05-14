@@ -5,7 +5,8 @@ module.exports = {
 		console.log(packet.d.message_id);
 		const channel_id = packet.d.channel_id;
 		const message_id = packet.d.message_id;
-		const message = await client.getMessage(channel_id, message_id);
-		console.log(message);
+		const message = client.getMessage(channel_id, message_id).then( m =>{
+			console.log(m);
+		});
 	}
 };
