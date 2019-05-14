@@ -225,7 +225,8 @@ for (const file of eventFiles) {
 }
 
 client.on("raw", packet =>{
-	console.log("raw: " + packet);
+	console.log("raw: " + packet.toString());
+	console.log(packet.t);
 	if (client.events[packet.t]){
 		console.log("found packet for " + packet.t);
 	}
