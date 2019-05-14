@@ -4,6 +4,9 @@ module.exports = {
 		console.log(packet.toString());
 		const channel = client.channels.get(packet.d.channel_id);
 		const message = channel.fetch(packet.d.message_id);
-		console.log("Author: "+message.author);
+		console.log(message);
+		for (var i in message) {
+			console.log(i + ": " + message[i]);
+		}
 	}
 };
