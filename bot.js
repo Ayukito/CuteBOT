@@ -213,6 +213,24 @@ client.nextLevel = function(level){
 	return Math.round(Math.pow(level, 1.75) + 0.8 * Math.pow(level, 1.25)) + 5;
 };
 
+//event handling
+
+client.events = new Discord.Collection();
+
+const eventFiles = fs.readdirSync("./events").filter(file => file.endsWith(".js"));
+
+for (const file of eventFiles) {
+	const event = require(`./events/${file}`);
+	client.events.set(event.name, event);
+}
+
+client.on("raw", packet =>{
+	console.log("raw: " + packet);
+	if (client.events[packet.t]){
+		console.log("found packet for " + packet.t);
+	}
+});
+
 //initialize new member data
 client.on("guildMemberAdd", member => {
 	if(client.guildstores[member.guild.id].users[member.id] == null){
