@@ -226,10 +226,9 @@ for (const file of eventFiles) {
 
 client.getMessage = async function(messageid, channelid){
 	client.channels.fetch(channelid).then(async channel =>{
-		channel.messages.fetch({around: messageid, limit: 1})
-			.then(async messages => {
-				return messages.first();
-			});
+		channel.messages.fetch({around: messageid, limit: 1}).then(async messages => {
+			return messages.first();
+		});
 	});
 };
 
