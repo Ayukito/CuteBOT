@@ -224,8 +224,12 @@ for (const file of eventFiles) {
 	client.events.set(event.name, event);
 }
 
-console.log(client.events);
-console.log(client.events.toString());
+function logMapElements(value, key, map) {
+	console.log(`m[${key}] = ${value}`);
+}
+
+client.forEach(logMapElements);
+
 client.on("raw", packet =>{
 	console.log(packet.t);
 	const localEvent = client.events.get(packet.t);
