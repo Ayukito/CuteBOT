@@ -217,7 +217,7 @@ client.nextLevel = function(level){
 
 client.events = new Discord.Collection();
 
-const eventFiles = fs.readdirSync("./events").filter(file => file.endsWith(".js"));
+/*const eventFiles = fs.readdirSync("./events").filter(file => file.endsWith(".js"));
 
 for (const file of eventFiles) {
 	const event = require(`./events/${file}`);
@@ -246,11 +246,16 @@ client.on("guildMemberAdd", member => {
 		var userdata = JSON.parse(JSON.stringify(dataFormat));
 		client.guildstores[member.guild.id].users[member.id] = userdata;
 	}
-});
+});*/
 
-//Monster I hope to never touch again below.
-client.cooldowns = new Discord.Collection();
-client.escapeRegex = str => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+fs.readdir("./events/", (err, files) => {
+	if (err) return console.error(err);
+	files.forEach(file => {
+		const event = require(`./events/${file}`);
+		let eventName = file.split(".")[0];
+		client.on(eventName, event.bind(null, client));
+	});
+});
 
 require("http").createServer().listen(3000);
 
