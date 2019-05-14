@@ -5,7 +5,7 @@ module.exports = {
 		client.channels.fetch(packet.d.channel_id).then(channel =>{
 			console.log("CHANNEL");
 			console.log(channel);
-			channel.fetch(packet.d.message_id).then(message =>{
+			channel.messages.fetch(packet.d.message_id).then(message =>{
 				console.log("MESSAGE");
 				console.log(message);
 				console.log(message.author);
