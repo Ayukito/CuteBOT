@@ -221,7 +221,7 @@ const eventFiles = fs.readdirSync("./events").filter(file => file.endsWith(".js"
 
 for (const file of eventFiles) {
 	const event = require(`./events/${file}`);
-	client.events.set(event.name, event);
+	client.events.set(file, event);
 }
 
 client.on("raw", packet =>{
