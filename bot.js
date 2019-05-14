@@ -227,6 +227,7 @@ for (const file of eventFiles) {
 client.on("raw", packet =>{
 	console.log(packet.t);
 	const localEvent = client.events.has(packet.t);
+	console.log(`Has ${packet.t} in events folder: ${localEvent}`);
 	if (localEvent){
 		console.log("found packet for " + packet.t);
 	}
