@@ -31,7 +31,7 @@ module.exports = (client, message) => {
 
 			message.channel.send({embed: embed});
 		}
-		client.setScore.run(message.author.id, message.guild.id, score);
+		client.setScore(message.author.id, message.guild.id, score);
 	}
 
 	const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(client.prefix)})\\s*`);
