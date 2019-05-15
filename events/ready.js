@@ -101,15 +101,12 @@ module.exports = (client) =>{
 			
 		});
 		
-		//ugly replacement code for sqlite3 because I'm lazy
-		client.getScore = {};
-		client.getScore.get = function(authorid, guildid){
+		client.getScore = function(authorid, guildid){
 			//console.log("got data of "+ authorid + " in " + guildid);
 			return client.guildstores[guildid].users[authorid];
 		};
 
-		client.setScore = {};
-		client.setScore.run = function(authorid, guildid, score){
+		client.setScore = function(authorid, guildid, score){
 			//console.log("set data of "+ authorid + " in " + guildid + " to:\n"+score);
 			client.guildstores[guildid].users[authorid] = score;
 		};

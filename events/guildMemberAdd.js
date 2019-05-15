@@ -1,7 +1,7 @@
 module.exports = (client, member) =>{
-	if(client.guildstores[member.guild.id].users[member.id] == null){
+	if(client.getScore(member.id, member.guild.id) == null){
 		var userdata = JSON.parse(JSON.stringify(client.dataFormat));
-		client.guildstores[member.guild.id].users[member.id] = userdata;
+		client.setScore(member.id, member.guild.id, userdata);
 	}
 	if(client.guildstores[member.guild.id].settings.welcomeChannel != null){
 		console.log("DEBUG: Logging to welcome channel");

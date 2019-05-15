@@ -7,7 +7,7 @@ module.exports = {
 	usage: "(OPTIONAL) <@user>",
 	execute(message, args, Discord) {
 		const user = message.mentions.users.first() || message.author;
-		let score = message.client.getScore.get(user.id, message.guild.id);
+		let score = message.client.getScore(user.id, message.guild.id);
 		const curLevel = score.level;
 		
 		var embed = new Discord.MessageEmbed()

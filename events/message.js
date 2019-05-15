@@ -9,7 +9,7 @@ module.exports = (client, message) => {
 	if(message.author.bot) return;
 	let score;
 	if (message.guild) {
-		score = client.getScore.get(message.author.id, message.guild.id);
+		score = client.getScore(message.author.id, message.guild.id);
 		//make data for new users, will be moved to onguildmemberadded later.
 		if (!score) {
 			score = JSON.parse(JSON.stringify(client.dataFormat));
