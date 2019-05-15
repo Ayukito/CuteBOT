@@ -100,13 +100,15 @@ module.exports = (client) =>{
 			}
 			
 		});
-		
+
 		client.getScore = function(authorid, guildid){
+			console.log(authorid, guildid);
 			//console.log("got data of "+ authorid + " in " + guildid);
 			return client.guildstores[guildid].users[authorid];
 		};
 
 		client.setScore = function(authorid, guildid, score){
+			console.log(authorid, guildid);
 			//console.log("set data of "+ authorid + " in " + guildid + " to:\n"+score);
 			client.guildstores[guildid].users[authorid] = score;
 		};
