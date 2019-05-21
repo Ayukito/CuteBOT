@@ -35,31 +35,31 @@ module.exports = (client) =>{
 			client.guildstores[guild.id] = {
 				"token": token,
 				users: {},
-				settings: {},
+				settings: {
+					//welcomeChannel: "general",
+					//customWelcome: "Welcome <@$userid> to the server! Their name is $user and their discriminator is $discr!"
+				},
 				muted: {},
 				banned: {}
 			};
 			//settings
 			guildstore.read("settings").then(settings =>{
-				client.guildstores[guild.id].settings = settings;
-				if (settings == null){
-					settings = {};
+				if (settings != null){
+					client.guildstores[guild.id].settings = settings;
 				}
 			});
 
 			//muted
 			guildstore.read("muted").then(muted =>{
-				client.guildstores[guild.id].muted = muted;
-				if (muted == null){
-					muted = {};
+				if (muted != null){
+					client.guildstores[guild.id].muted = muted;
 				}
 			});
 
 			//banned
 			guildstore.read("banned").then(banned =>{
-				client.guildstores[guild.id].banned = banned;
-				if (banned == null){
-					banned = {};
+				if (banned != null){
+					client.guildstores[guild.id].banned = banned;
 				}
 			});
 			//wait for user data to load
