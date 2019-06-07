@@ -15,7 +15,7 @@ client.dataFormat = {
 	points: 0,
 	money: 0
 };
-
+//hi
 //init Tenor client
 client.Tenor = require("tenorjs").client({
 	"Key": process.env.tenorTOKEN,
