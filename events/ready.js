@@ -29,8 +29,8 @@ module.exports = (client) =>{
 		var token;
 
 		let startup = function(){
-			console.log(token);
-			console.log(guild.id);
+			//console.log(token);
+			//console.log(guild.id);
 			//get data
 			var guildstore = new jsonstore(token);
 			client.guildstores[guild.id] = {
@@ -68,7 +68,6 @@ module.exports = (client) =>{
 				if (users == null){
 					console.log("uh oh something fucked up");
 					users = {};
-					client.guildstores[guild.id].users = {};
 				}
 				client.guildstores[guild.id].users = users;
 				guild.members.forEach(member => {
