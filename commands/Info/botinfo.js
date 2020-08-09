@@ -11,9 +11,9 @@ module.exports = {
 		let minutes = Math.floor(totalSeconds / 60);
 		let seconds = totalSeconds % 60;
 
-		var onlineCount = message.client.users.filter(m => m.presence.status === "online").size;
-		var textCount = message.client.channels.filter(m => m.type === "text").size;
-		var vcCount = message.client.channels.filter(m => m.type === "voice").size;
+		var onlineCount = message.client.users.cache.filter(m => m.presence.status === "online").size;
+		var textCount = message.client.channels.cache.filter(m => m.type === "text").size;
+		var vcCount = message.client.channels.cache.filter(m => m.type === "voice").size;
 		
 		var embed = new Discord.MessageEmbed()
 			.setAuthor(message.client.user.username, message.client.user.displayAvatarURL({ format: "png", size: 512 }))
@@ -21,8 +21,8 @@ module.exports = {
 			.addField("Bot created on", message.client.user.createdAt.toDateString() + "\n "+ message.client.user.createdAt.toLocaleTimeString("en-US"), true)
 			.addField("Bot owner", "<@312309974384640011>", true)
 			.addField("Uptime", `${days}d ${hours}h ${minutes}m ${Math.round(seconds)}s`, true)
-			.addField("Servers", `**${message.client.guilds.size}**`, true)
-			.addField("Users", `**${message.client.users.size}** (**${onlineCount}** Online)`, true)
+			.addField("Servers", `**${message.client.guilds.cache.size}**`, true)
+			.addField("Users", `**${message.client.users.cache.size}** (**${onlineCount}** Online)`, true)
 			.addField("Channels", `**${textCount} ** Text, **${vcCount}** Voice`, true)
 			.setColor(message.client.colormain)
 			.setThumbnail(message.client.user.displayAvatarURL({ format: "png", size: 512 }));
