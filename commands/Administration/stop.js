@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-const jsonstore = require("jsonstore.io");
 module.exports = {
 	name: "stop",
 	aliases: ["restart", "save"],

@@ -3,8 +3,6 @@ const fs = require("fs");
 const Discord = require("discord.js");
 const client = new Discord.Client();
 
-const jsonstore = require("jsonstore.io");
-
 client.guildstores = [];
 
 client.colormain = 0xffbae9;
@@ -104,19 +102,6 @@ fs.readdir("./events/", (err, files) => {
 client.nextLevel = function(level){
 	return Math.round(Math.pow(level, 1.75) + 0.8 * Math.pow(level, 1.25)) + 5;
 };
-
-//basic save function for my stoof
-client.save = function(){
-	var guilds = client.guildstores;
-	for (var guild in client.guildstores) {
-		//console.log("Saving data to token: "+guilds[guild].token);
-		var guildstore = new jsonstore(guilds[guild].token);
-		guildstore.write("users",guilds[guild].users);
-	}
-	console.log("\x1b[33m%s\x1b[0m","[Autosaved data at " + new Date() + "]");
-};
-
-setInterval(client.save, 60000*10);
 
 require("http").createServer().listen(3000);
 client.login(process.env.TOKEN).catch(console.error);

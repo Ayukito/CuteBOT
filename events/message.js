@@ -8,31 +8,7 @@ module.exports = (client, message) => {
 
 	if(message.author.bot) return;
 	let score;
-	if (message.guild) {
-		score = client.getScore(message.author.id, message.guild.id);
-		//make data for new users, will be moved to onguildmemberadded later.
-		if (!score) {
-			score = JSON.parse(JSON.stringify(client.dataFormat));
-			//just in case kek
-			client.guildstores[message.guild.id].users[message.author.id] = score;
-		}
-		score.points++;
-		score.exp++;
-		//determine if level up or not
-		if(score.exp > client.nextLevel(score.level+1)) {
-			score.level++;
-			score.exp = 0;
-			var embed = new Discord.MessageEmbed()
-				.setAuthor(message.client.user.username, message.client.user.displayAvatarURL({ format: "png", size: 512 }))
-				.setTitle(message.author.username)
-				.addField("**Congrats!**", `You are now level **${score.level}**!!!`, true)
-				.setColor(client.colormain)
-				.setThumbnail(message.author.displayAvatarURL({ format: "png", size: 512 }));
-
-			message.channel.send({embed: embed});
-		}
-		client.setScore(message.author.id, message.guild.id, score);
-	}
+	
 
 	const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(client.prefix)})\\s*`);
 	if (!prefixRegex.test(message.content)) return;
